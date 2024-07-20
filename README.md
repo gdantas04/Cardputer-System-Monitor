@@ -32,4 +32,5 @@ Send sensor data from your computer to the Cardputer via USB.
 ## Important ⚠️
 - Tested only on Linux devices;
 - It has not been tested on Windows, but the Python code logic should not change much;
+- Scroll plot inspired by https://github.com/m5stack/M5GFX/tree/master/examples/Basic/ScrollGraph;
 - If you think you can help me send data via Bluetooth, send me an email (gdantas@tuta.io).
