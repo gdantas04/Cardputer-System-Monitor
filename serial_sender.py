@@ -4,7 +4,7 @@ import serial.tools.list_ports
 def cpu_sender():
     cpu_to_send = [str(psutil.cpu_percent(1)),
                str(int(psutil.cpu_freq().current)),
-               str(int(psutil.sensors_temperatures()['coretemp'][1][1]))]
+               str(int(psutil.sensors_temperatures()['coretemp'][1][1]))]    # You should change this according to your CPU name
     
     return cpu_to_send
 
