@@ -4,7 +4,6 @@
 #include <M5Unified.h>
 #include <vector>
 
-#define LINE_COUNT 1  
 #define MAX_TERMS 10 
 #define LINE_COUNT 1 
 
