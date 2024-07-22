@@ -1,22 +1,26 @@
-import psutil, serial, time
-import serial.tools.list_ports
+import json, psutil, serial, time, serial.tools.list_ports
 
-def cpu_sender():
+
+with open('user_settings.json') as f:
+    settings = json.load(f)
+
+
+def cpu_sender(arg1):
     cpu_to_send = [str(psutil.cpu_percent(1)),
                str(int(psutil.cpu_freq().current)),
-               str(int(psutil.sensors_temperatures()['coretemp'][1][1]))]    # You should change this according to your CPU name
+               str(int(psutil.sensors_temperatures()[arg1][1][1]))]
     
     return cpu_to_send
 
 
-def disk_sender():
+def disk_sender(arg2):
     disks = []
     for tupla in psutil.disk_partitions():
         disks.append(tupla[0])
 
     disk_to_send = [str(psutil.disk_usage('/')[3]),
                str(disks),
-               str(int(psutil.sensors_temperatures()['nvme'][1][1]))]    # You should change this according to your disk
+               str(int(psutil.sensors_temperatures()[arg2][1][1]))]    # You should change this according to your disk
 
     return disk_to_send
 
@@ -29,9 +33,47 @@ def other_sender():
     return other_to_send
 
 
+print('\n---- CARDPUTER SERIAL SENDER ----\n\n')
+
+
+if settings == {"cpu_temp_sensor":0,"disk_temp_sensor":0}:
+    c = 0
+    j = 0 
+    cpu_dict = {}
+    disk_dict = {}
+
+    temp_sensors = list(psutil.sensors_temperatures().keys())
+
+
+    print("Looks like it's your first time running this program, let's configure your profile.\n\nI'm gonna list your temperature sensors.\n\nSelect the one who is related to your CPU temperature:")
+    for elem in temp_sensors:
+        print(f'[{c}] {elem}')
+        cpu_dict[c] = elem
+        c+=1
+    cpu_sensor = int(input('\n> '))
+    cpu_sensor = cpu_dict[cpu_sensor]
+
+    temp_sensors.remove(cpu_sensor)
+
+
+    print("\nRight! Now choose the one who is related to your Disk temperature:")
+    for elem in temp_sensors:
+        print(f'[{j}] {elem}')
+        disk_dict[j] = elem
+        j+=1
+    disk_sensor = int(input('\n> '))
+    disk_sensor = disk_dict[disk_sensor]
+
+    settings["cpu_temp_sensor"] = cpu_sensor
+    settings["disk_temp_sensor"] = disk_sensor
+
+    with open('user_settings.json', 'w') as f:
+        json.dump(settings, f)
+
+
 
 portas = serial.tools.list_ports.comports()
-print('\n---- CARDPUTER SERIAL SENDER ----\n\nChoose the port number:')
+print('Choose the port number:')
 
 k = 0
 ports_dict = {}
@@ -51,8 +93,7 @@ time.sleep(2) # time to establish serial connection
 
 print(f'\nSending serial data to port {result}')
 
-
 while(True):
-    to_send = ['0','newcicle','trash'] + cpu_sender() + disk_sender() + other_sender()
+    to_send = ['0','newcicle','trash'] + cpu_sender(settings["cpu_temp_sensor"]) + disk_sender(settings["disk_temp_sensor"]) + other_sender()
     for info in to_send:
         ser.write((info + '\n').encode())
