@@ -9,6 +9,10 @@ def cpu_sender(arg1):
     cpu_to_send = [str(psutil.cpu_percent(1)),
                str(int(psutil.cpu_freq().current)),
                str(int(psutil.sensors_temperatures()[arg1][1][1]))]
+
+    ## Use the bottom line instead of the top one if you are having problems with the temperature sensors
+    # cpu_to_send = [str(psutil.cpu_percent(1)),str(int(psutil.cpu_freq().current)),"-"] 
+    
     
     return cpu_to_send
 
@@ -20,7 +24,11 @@ def disk_sender(arg2):
 
     disk_to_send = [str(psutil.disk_usage('/')[3]),
                str(disks),
-               str(int(psutil.sensors_temperatures()[arg2][1][1]))]    # You should change this according to your disk
+               str(int(psutil.sensors_temperatures()[arg2][1][1]))]    
+
+    ## Use the bottom line instead of the top one if you are having problems with the temperature sensors
+    # disk_to_send = [str(psutil.disk_usage('/')[3]), str(disks), "-"]
+
 
     return disk_to_send
 
