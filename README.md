@@ -31,7 +31,6 @@ Send sensor data from your computer to the Cardputer via USB.
 
 ## Important ⚠️
 - Tested only on Linux devices;
-- If termal sensors are not supported by the OS an empty dict is returned, so you may have to change some parts of the python code. Check the Psutil documentation: https://psutil.readthedocs.io/en/latest/index.html
 - It has not been tested on Windows, but the Python code logic should not change much;
 - Scroll plot inspired by https://github.com/m5stack/M5GFX/tree/master/examples/Basic/ScrollGraph;
 - If you think you can help me send data via Bluetooth, send me an email (gdantas@tuta.io).
