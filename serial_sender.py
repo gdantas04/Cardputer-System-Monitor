@@ -25,7 +25,7 @@ class Interface:
 
 
 
-# To loag json config file
+# To load json config file
 
 with open('user_settings.json') as f:
     settings = json.load(f)
@@ -41,7 +41,7 @@ else:
 
 
 
-# To see if there are bettery sensors available
+# To see if there are battery sensors available
 
 if psutil.sensors_battery() == None:
     state_bat = False
